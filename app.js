@@ -1,7 +1,8 @@
 import express from 'express';
 import cors from 'cors';
-import db from './src/dataBase/db.js';
+//import db from './src/dataBase/db.js';
 import productsRouter from './src/routes/productsRouter.js';
+import categoriesRouter from './src/routes/categoriesRouter.js';
 //app.js o server.js
 // define el servidor
 //escucha el puerto
@@ -24,6 +25,7 @@ app.use(express.json()); // Middleware para parsear JSON en las solicitudes
 // Rutas
 //const productsRouter = require('./routes/productsRouter.js'); // Define tus rutas en un archivo separado
 app.use('/products', productsRouter); // Todas las rutas relacionadas con productos estarán bajo /home
+app.use('/categories', categoriesRouter);
 /*
 const usersRouter = require('./routes/usersRouter.js'); 
 app.use('/Users', usersRouter); 
@@ -44,16 +46,6 @@ export const server = app.listen(0, () => {
     console.log('server up in', server.address().port)
 })*/
 
-
-// Testear la conexión
-db
-  .authenticate()
-  .then(() => {
-    console.log('Conexión establecida correctamente.');
-  })
-  .catch(err => {
-    console.error('Error al conectar con la base de datos:', err);
-  });
 
 
 export const server = app.listen(8085, () => {

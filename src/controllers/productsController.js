@@ -22,9 +22,38 @@ export const getProductById = async (req, res) => {
       res.status(500).json({ error: 'Error al obtener el producto.' });
     }
   };
+
+
+// GET by CATEGORY ---------------  
+export const getProductByCategory = async (req, res) => {
+  try {
+    const category = await ProductsModel.findAll({
+      where: {category_id: req.params.category_id}});
+    if (!category) {
+      return res.status(404).json({ error: 'Id de categoría no encontrado.' });
+    }
+    res.json(category);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener el producto.' });
+  }
+};
+
+// GET by NAME PRODUCTS  ---------------  
+export const getProductByName = async (req, res) => {
+  try {
+    const name = await ProductsModel.findAll({
+      where: {product_name: req.params.product_name}});
+    if (!name) {
+      return res.status(404).json({ error: 'Nombre de producto no encontrado.' });
+    }
+    res.json(name);
+  } catch (error) {
+    res.status(500).json({ error: 'Error al obtener el producto.' });
+  }
+};
   
-  // POST ---------------  
-  export const addProduct = async (req, res) => {
+  // ADD ---------------  
+  export const createProduct = async (req, res) => {
     try {
         const product = await ProductsModel.create(req.body);
         res.status(201).json(product);
@@ -32,28 +61,8 @@ export const getProductById = async (req, res) => {
         res.status(500).send(error.message);
     }
 };
-/*export const createProduct = async (req, res) => {
-    const { product_id, product_name, product_description, product_price, category_id, brand_id, product_stock_units, created_at } = req.body;
-    try {
-    const newProduct = await ProductsModel.create({
-      product_id,
-      product_name,
-      product_description,
-      product_price,
-      category_id,
-      brand_id,
-      product_stock_units,
-      created_at
-    });
-    res.status(201).json(newProduct);
-  } catch (error) {
-    res.status(500).json({ error: 'Error al crear el producto.' });
-  }
-};*/
-
-
   
-// PUT/PATH ---------------  
+// UPDATE  ---------------  
 export const updateProduct = async (req, res) => {
   try {
       const product = await ProductsModel.findByPk(req.params.id);
@@ -61,76 +70,24 @@ export const updateProduct = async (req, res) => {
           await product.update(req.body);
           res.status(200).json(product);
       } else {
-          res.status(404).send('Product with the specified ID does not exist');
+          res.status(404).json({messagge: 'Product with the specified ID does not exist'});
       }
   } catch (error) {
-      res.status(500).send(error.message);
+      res.status(500).json({messagge: error.message});
   }
 };
-/*export const updateProduct = async (req, res) => {
-const { product_id, product_name, product_description, product_price, category_id, brand_id, product_stock_units, created_at } = req.body;
-  
-  try {
-    // Utiliza el modelo ProductsModel para actualizar el producto en la base de datos
-    const [updatedRowsCount, updatedProducts] = await ProductsModel.update(
-      {
-        product_id,
-        product_name,
-        product_description,
-        product_price,
-        category_id,
-        brand_id,
-        product_stock_units,
-        created_at
-      },
-      {
-        where: {
-          product_id: req.params.id // Encuentra el producto por su ID
-        },
-        returning: true // Para obtener el producto actualizado
-      }
-    );
 
-    // Si no se encontró ningún producto para actualizar, devuelve un error 404
-    if (updatedRowsCount === 0) {
-      return res.status(404).json({ error: 'Producto no encontrado.' });
-    }
-    // Devuelve el producto actualizado como respuesta
-    res.json(updatedProducts[0]);
-  } catch (error) {
-    res.status(500).json({ error: 'Error al actualizar el producto.' });
-  }
-};*/
-
-
-// Función para eliminar un producto ---------------  
+// DELETE  ---------------  
 export const deleteProduct = async (req, res) => {
   try {
-      const product = await Product.findByPk(req.params.id);
+      const product = await ProductsModel.findByPk(req.params.id);
       if (product) {
           await product.destroy();
-          res.status(200).send('Product deleted');
+          res.status(200).json('Product deleted');
       } else {
-          res.status(404).send('Product with the specified ID does not exist');
+          res.status(404).json('Product with the specified ID does not exist');
       }
   } catch (error) {
       res.status(500).send(error.message);
   }
 };
-
-/*export const deleteProduct = async (req, res) => {
-  try {
-    const deletedRowCount = await ProductsModel.destroy({
-      where: {
-        product_id: req.params.id // Encuentra el producto por su ID
-      }
-    });
-    if (deletedRowCount === 0) {
-      return res.status(404).json({ error: 'Producto no encontrado.' });
-    }
-    res.json({ message: `Producto eliminado exitosamente con ID: ${req.params.id}` });
-  } catch (error) {
-    res.status(500).json({ error: 'Error al eliminar el producto.' });
-  }
-};
-*/

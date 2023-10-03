@@ -1,4 +1,4 @@
-/*import db from "../dataBase/db.js";
+import db from "../dataBase/db.js";
 import { DataTypes } from "sequelize";
 
 const CategoriesModel = db.define("categories", {
@@ -24,4 +24,4 @@ const CategoriesModel = db.define("categories", {
     timestamps: false
 })
 
-export default CategoriesModel; */
+export default CategoriesModel; 

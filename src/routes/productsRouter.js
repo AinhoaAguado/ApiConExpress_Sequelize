@@ -1,28 +1,14 @@
-/*const express = require('express');
-const router = express.Router();
-
-const productsController = require('../controllers/productsController.js'); // Controladores: Define tus controladores en un archivo separado
-
-// Rutas
-router.get('/', productsController.getAllProducts);
-router.get('/:id', productsController.getProductById);
-router.post('/', productsController.createProduct);
-router.put('/:id', productsController.updateProduct);
-router.delete('/:id', productsController.deleteProduct);
-
-module.exports = productsController;
-*/
-
 import express from 'express';
-const productsRouter = express.Router();
-import { getAllProducts} from '../controllers/productsController.js';  //, getProductById, createProduct, updateProduct, deleteProduct 
-// Controladores: Define tus controladores en un archivo separado
+const router = express.Router();
+import { getAllProducts, getProductById, getProductByCategory, getProductByName, createProduct, updateProduct, deleteProduct} from '../controllers/productsController.js';  //, getProductById, createProduct, updateProduct, deleteProduct 
 
-// Rutas
-productsRouter.get('/', getAllProducts);
-//productsRouter.get('/:id', getProductById);
-//productsRouter.post('/', createProduct);
-//productsRouter.put('/:id', updateProduct);
-//productsRouter.delete('/:id', deleteProduct);
+router.get('/', getAllProducts);
+router.get('/:id', getProductById);
+router.get('/categories/:category_id', getProductByCategory);
+router.get('/categories/:product_name', getProductByName);
+router.post('/', createProduct);
+router.put('/:id', updateProduct);
+router.delete('/:id', deleteProduct);
 
-export default productsRouter;
+
+export default router;

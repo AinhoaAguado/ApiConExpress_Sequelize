@@ -16,6 +16,16 @@ const db = new Sequelize('productos_tienda_local', 'root', 'Inxpirius_88', {
    // define:{timestamps: false}
   });
 
+// Testear la conexión
+db
+  .authenticate()
+  .then(() => {
+    console.log('Conexión establecida correctamente.');
+  })
+  .catch(err => {
+    console.error('Error al conectar con la base de datos:', err);
+  });
+
 
   
 //module.exports = db;
